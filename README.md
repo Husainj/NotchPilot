@@ -4,7 +4,7 @@
 
 <!-- Add a hero GIF here: ![NotchPilot demo](docs/demo.gif) -->
 
-[Download](https://github.com/Husainj/notchpilot/releases/latest) · [Website](https://husainj.github.io/notchpilot/) · [Follow @husain_j53 on X](https://x.com/husain_j53)
+[Download](https://github.com/Husainj/notchpilot/releases/latest) · [Website](https://notchpilot.husainjhalod.me/) · [Follow @husain_j53 on X](https://x.com/husain_j53)
 
 ## Features
 
@@ -41,7 +41,7 @@ brew install --cask husainj/tap/notchpilot
 1. Open the app and click **Done** on the warning.
 2. Go to **System Settings → Privacy & Security** and click **Open Anyway**.
 
-You only do this once; updates install automatically. ([Illustrated guide](https://husainj.github.io/notchpilot/install.html))
+You only do this once; updates install automatically. ([Illustrated guide](https://notchpilot.husainjhalod.me/install.html))
 
 ### Permissions (all optional, asked only when you use the feature)
 | Permission | Used for |
@@ -89,8 +89,8 @@ Adding a feature means implementing `NotchModule` (`Sources/NotchShell/NotchModu
 All free: GitHub Releases host the DMGs, GitHub Pages hosts the update feed, and GitHub Actions builds releases.
 
 **One-time setup**
-1. **Repo:** create the public repo `Husainj/notchpilot` and push `main`. The update feed (`SUFeedURL` in `Resources/Info.plist`) is already `https://husainj.github.io/notchpilot/appcast.xml`.
-2. **GitHub Pages:** in **Settings → Pages**, choose "Deploy from a branch", branch `main`, folder `/docs`.
+1. **Repo:** create the public repo `Husainj/notchpilot` and push `main`. The update feed (`SUFeedURL` in `Resources/Info.plist`) is already `https://notchpilot.husainjhalod.me/appcast.xml`.
+2. **GitHub Pages:** in **Settings → Pages**, choose "Deploy from a branch", branch `main`, folder `/docs`. The site uses the custom domain in `docs/CNAME` (`notchpilot.husainjhalod.me`), which needs a DNS **CNAME** record `notchpilot` → `husainj.github.io`. Turn on **Enforce HTTPS** once the certificate is ready.
 3. **Signing key:** run `make sparkle-keys`. It writes the public key into Info.plist and creates the private signing key.
    - **Back up the private key.** Lose it and existing users can never auto-update again.
    - Add it as the `SPARKLE_PRIVATE_KEY` repository secret for CI; the script prints the command.

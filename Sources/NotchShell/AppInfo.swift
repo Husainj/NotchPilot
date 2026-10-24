@@ -6,7 +6,7 @@ public enum AppInfo {
     public static let name = "NotchPilot"
     public static let author = "husain_j53" // X handle, without "@"
     public static let githubRepo = URL(string: "https://github.com/Husainj/notchpilot")!
-    public static let website = URL(string: "https://husainj.github.io/notchpilot/")!
+    public static let website = URL(string: "https://notchpilot.husainjhalod.me/")!
 
     public static var twitter: URL { URL(string: "https://x.com/\(author)")! }
     public static var issues: URL { githubRepo.appendingPathComponent("issues/new/choose") }

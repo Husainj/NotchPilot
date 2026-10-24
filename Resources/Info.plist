@@ -39,7 +39,7 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://husainj.github.io/notchpilot/appcast.xml</string>
+	<string>https://notchpilot.husainjhalod.me/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>XIHfUwWZXsXeTsP1KdtFZrjNRy9x+h2jjZSef2aUslM=</string>
 	<key>SUScheduledCheckInterval</key>
