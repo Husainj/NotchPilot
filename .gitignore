@@ -1,0 +1,7 @@
+.build/
+build/
+releases/
+.DS_Store
+.swiftpm/
+xcuserdata/
+.vscode/

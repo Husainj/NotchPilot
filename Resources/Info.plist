@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>NotchPilot</string>
+	<key>CFBundleExecutable</key>
+	<string>NotchPilot</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.notchpilot.app</string>
+	<key>CFBundleName</key>
+	<string>NotchPilot</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>NotchPilot reads the current track from Music and Spotify and controls playback.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>NotchPilot shows your upcoming events in the island.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The Mirror tab shows your camera so you can check how you look before a call.</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2026 Husain Jhalodwala. MIT License.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>NotchPilot uses your approximate location to show local weather.</string>
+	<key>NSRemindersFullAccessUsageDescription</key>
+	<string>NotchPilot shows your reminders and lets you check them off from the island.</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://husainj.github.io/notchpilot/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>XIHfUwWZXsXeTsP1KdtFZrjNRy9x+h2jjZSef2aUslM=</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
+</dict>
+</plist>
