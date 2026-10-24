@@ -7,45 +7,241 @@
   <meta name="description" content="Free and open-source Dynamic Island for the MacBook notch: live Claude Code / Codex / Cursor sessions, meeting mute, music, file shelf, clipboard and more.">
   <meta property="og:title" content="NotchPilot: your notch, finally useful">
   <meta property="og:description" content="Free, open-source Dynamic Island for macOS with an AI coding agent dashboard.">
+  <meta property="og:image" content="https://notchpilot.husainjhalod.me/icon.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:creator" content="@husain_j53">
+  <meta name="theme-color" content="#08080c">
+  <link rel="icon" href="icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">NotchPilot</a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#ai">For AI coders</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/Husainj/notchpilot" class="gh">GitHub</a>
+    </nav>
+    <a class="btn btn-sm" href="https://github.com/Husainj/notchpilot/releases/latest">Download</a>
+  </div>
+</header>
+
 <main>
+  <!-- Hero -->
   <section class="hero">
-    <div class="island" title="Hover me"></div>
-    <h1>Your notch,<br>finally useful.</h1>
-    <p>A free, open-source Dynamic Island for your Mac. See your AI coding agents work, mute any call, control music and park files, all one hover away.</p>
-    <a class="buy" href="https://github.com/Husainj/notchpilot/releases/latest">Download for macOS</a>
-    <a class="secondary" href="https://github.com/Husainj/notchpilot">★ Star on GitHub</a>
-    <p class="small">Free forever · MIT licensed · macOS 14+ · <a href="install.html">Install guide</a></p>
-    <p class="small">or <code>brew install --cask husainj/tap/notchpilot</code></p>
+    <div class="glow" aria-hidden="true"></div>
+    <span class="pill">Free &amp; open source · MIT</span>
+    <h1>Your notch,<br><span class="grad">finally useful.</span></h1>
+    <p class="lead">A Dynamic Island for your Mac. Watch your AI coding agents work, mute any call, control music and park files, all one hover away.</p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/Husainj/notchpilot/releases/latest">
+        <svg width="16" height="18" viewBox="0 0 814 1000" aria-hidden="true"><path fill="currentColor" d="M788 341c-6 4-108 62-108 190 0 149 131 202 135 203-1 3-21 72-69 142-43 62-88 124-156 124s-86-40-165-40c-77 0-104 41-167 41s-106-57-156-128C44 790 0 671 0 557c0-183 119-280 236-280 62 0 114 41 153 41 37 0 95-43 166-43 27 0 124 2 188 66zM554 159c29-35 50-83 50-131 0-7-1-13-2-19-47 2-104 32-138 71-27 30-52 78-52 127 0 7 1 15 2 17 3 1 8 1 13 1 43 0 97-29 127-66z"/></svg>
+        Download for macOS
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/Husainj/notchpilot">★ Star on GitHub</a>
+    </div>
+    <button class="brew" type="button" data-copy="brew install --cask husainj/tap/notchpilot" title="Copy">
+      <span class="prompt">$</span> brew install --cask husainj/tap/notchpilot <span class="copy">Copy</span>
+    </button>
+    <p class="meta">macOS 14 Sonoma or later · Apple silicon · <a href="install.html">Install guide</a></p>
+
+    <!-- Live demo: the island cycles through real states -->
+    <div class="screen" aria-label="NotchPilot demo">
+      <div class="menubar"><span class="menus"><b></b>Code<i>File</i><i>Edit</i><i>View</i></span><span class="clock" id="clock">9:41</span></div>
+      <div class="island" id="island">
+        <div class="state on" data-state="agent">
+          <span class="l"><i class="spinner"></i>Claude</span><span class="r">working · 2m</span>
+        </div>
+        <div class="state" data-state="approve">
+          <span class="l"><i class="dot orange"></i>Codex</span><span class="r orange">needs approval</span>
+        </div>
+        <div class="state" data-state="music">
+          <span class="l"><i class="art"></i></span><span class="r"><i class="bars"><b></b><b></b><b></b><b></b></i></span>
+        </div>
+        <div class="state" data-state="mute">
+          <span class="l"><i class="dot red"></i>On a call</span><span class="r red">Muted · 12:04</span>
+        </div>
+        <div class="state" data-state="done">
+          <span class="l"><i class="dot green"></i>Claude</span><span class="r green">done ✓</span>
+        </div>
+      </div>
+      <div class="expanded" aria-hidden="true">
+        <div class="tile">
+          <h4>Sessions</h4>
+          <div class="row"><i class="spinner"></i><b>api-server</b><em>working</em></div>
+          <div class="row"><i class="dot orange"></i><b>web-app</b><em class="orange">approve?</em></div>
+          <div class="row"><i class="dot green"></i><b>docs</b><em class="green">done</em></div>
+        </div>
+        <div class="tile">
+          <h4>Limits</h4>
+          <div class="meter"><span style="width:62%"></span></div>
+          <p>5-hour window · resets in <b>1h 48m</b></p>
+          <div class="meter alt"><span style="width:34%"></span></div>
+          <p>Weekly · <b>34%</b> used</p>
+        </div>
+        <div class="tile">
+          <h4>Today</h4>
+          <div class="chart"><i style="height:30%"></i><i style="height:55%"></i><i style="height:40%"></i><i style="height:80%"></i><i style="height:62%"></i><i style="height:95%"></i><i style="height:70%"></i></div>
+          <p>1.2M tokens · <b>$8.40</b></p>
+        </div>
+      </div>
+      <div class="dock" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="hint">Hover the screen to open the island</p>
+    </div>
   </section>
 
-  <!-- Add a demo video/GIF here, e.g. <video src="demo.mp4" autoplay loop muted playsinline></video> -->
+  <!-- AI section -->
+  <section id="ai" class="split">
+    <div>
+      <span class="kicker">Built for AI coders</span>
+      <h2>Stop babysitting your terminal.</h2>
+      <p>NotchPilot shows every Claude Code, Codex and Cursor session right in your notch. Get a nudge the moment an agent needs your approval, see when it's done, and jump straight back to the right window.</p>
+      <ul class="checks">
+        <li>Live status for every session: working, needs input, done, failed</li>
+        <li>Usage and API-equivalent cost by day and model</li>
+        <li>Countdown to your Claude 5-hour limit reset, plus Codex limits</li>
+        <li>Keeps your Mac awake while an agent works, then lets it sleep</li>
+        <li>One click to connect. Reads local logs only; nothing is uploaded</li>
+      </ul>
+    </div>
+    <div class="term" aria-hidden="true">
+      <div class="term-bar"><i></i><i></i><i></i><span>~/projects/api-server</span></div>
+      <pre><span class="c">$</span> claude
+<span class="m">● Reading src/routes/users.ts</span>
+<span class="m">● Editing src/routes/users.ts</span>
+<span class="o">? Allow Bash: npm test</span>  <span class="m">← your notch pings you</span>
+<span class="g">✓ Tests passed (42)</span>
+<span class="g">✓ Done in 3m 12s</span></pre>
+    </div>
+  </section>
 
-  <h2>What's inside</h2>
-  <div class="grid">
-    <div class="card"><h3>✱ AI coding control center</h3><p>Live Claude Code, Codex and Cursor sessions: working, needs approval, done. Usage, cost and when your 5-hour limit resets.</p></div>
-    <div class="card"><h3>🎙 Meeting mode</h3><p>Mute your mic in every app with one shortcut, see who's using your mic and camera, and join your next call in one click.</p></div>
-    <div class="card"><h3>☕ Keep awake</h3><p>Your Mac stays awake while an agent is working, then sleeps normally again. Manual 30m / 1h / ∞ too.</p></div>
-    <div class="card"><h3>🎵 Now Playing</h3><p>Artwork and controls for any app: Spotify, Music, YouTube in the browser, local files.</p></div>
-    <div class="card"><h3>📥 Shelf & clipboard</h3><p>Drop files on the notch, drag them out later. Searchable clipboard history that never stores passwords.</p></div>
-    <div class="card"><h3>⏱ And more</h3><p>Pomodoro timers, notes, calendar and reminders, weather, system stats, a volume/brightness HUD and a camera mirror.</p></div>
-  </div>
+  <!-- Features -->
+  <section id="features">
+    <span class="kicker center">Everything in one hover</span>
+    <h2 class="center">More than a pretty notch</h2>
+    <div class="bento">
+      <article class="card big">
+        <div class="ico">🎙️</div>
+        <h3>Meeting mode</h3>
+        <p>Mute your mic in every app with <span class="keys"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>M</kbd></span>. See which app is using your mic or camera, get a call timer, auto-unmute when the call ends, and join Zoom, Meet or Teams from your calendar in one click.</p>
+      </article>
+      <article class="card">
+        <div class="ico">🎵</div>
+        <h3>Now Playing</h3>
+        <p>Artwork and controls for Spotify, Music, YouTube in the browser and local files.</p>
+      </article>
+      <article class="card">
+        <div class="ico">☕</div>
+        <h3>Keep awake</h3>
+        <p>30 minutes, an hour, or forever, with battery and time limits.</p>
+      </article>
+      <article class="card">
+        <div class="ico">📥</div>
+        <h3>File shelf</h3>
+        <p>Drop files on the notch, drag them out later, AirDrop or Quick Look them.</p>
+      </article>
+      <article class="card">
+        <div class="ico">📋</div>
+        <h3>Clipboard history</h3>
+        <p>Search and pin. Skips password managers.</p>
+      </article>
+      <article class="card">
+        <div class="ico">⏱️</div>
+        <h3>Timers &amp; Pomodoro</h3>
+        <p>Focus sessions with a glanceable countdown.</p>
+      </article>
+      <article class="card wide">
+        <div class="ico">✨</div>
+        <h3>And more</h3>
+        <p>Notes, calendar and reminders, weather, system stats, a volume and brightness HUD, battery details, a camera mirror and themes. Macs without a notch get a pill at the top of the screen.</p>
+      </article>
+    </div>
+  </section>
 
-  <h2>Private by design</h2>
-  <p>Everything runs on your Mac. No account, no analytics, no tracking. AI usage is read from your local logs and never uploaded. The code is open, so you can check.</p>
+  <!-- Privacy -->
+  <section class="privacy">
+    <div><strong>🔒 Private by design</strong><p>Everything runs on your Mac.</p></div>
+    <div><strong>🚫 No tracking</strong><p>No account, no analytics.</p></div>
+    <div><strong>👀 Open source</strong><p>Read every line on GitHub.</p></div>
+    <div><strong>🔄 Signed updates</strong><p>One click, verified with EdDSA.</p></div>
+  </section>
 
-  <h2>FAQ</h2>
-  <p><strong>Is it really free?</strong> Yes, free and open source under the MIT license. Contributions are welcome on <a href="https://github.com/Husainj/notchpilot">GitHub</a>.</p>
-  <p><strong>macOS says it can't verify the app.</strong> The app isn't notarized by Apple yet. Follow the <a href="install.html">2-step install guide</a>; you only do it once.</p>
-  <p><strong>How do updates work?</strong> The app checks for updates daily and installs them in one click. Releases are signed, so only real updates are accepted.</p>
-  <p><strong>Found a bug or have an idea?</strong> <a href="https://github.com/Husainj/notchpilot/issues/new/choose">Open an issue</a>.</p>
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <h2 class="center">Questions</h2>
+    <details>
+      <summary>Is it really free?</summary>
+      <p>Yes. NotchPilot is free and open source under the MIT license, with no trial, no ads and no paid tier. Contributions are welcome on <a href="https://github.com/Husainj/notchpilot">GitHub</a>.</p>
+    </details>
+    <details>
+      <summary>macOS says it can't verify the app</summary>
+      <p>The app isn't notarized by Apple yet. Follow the <a href="install.html">2-step install guide</a>; you only do it once, and updates install without it.</p>
+    </details>
+    <details>
+      <summary>Does it work on Macs without a notch?</summary>
+      <p>Yes. On Macs without a notch, or on external displays, the island appears as a small pill at the top of the screen.</p>
+    </details>
+    <details>
+      <summary>Does it send my code or prompts anywhere?</summary>
+      <p>No. Agent status comes from small local hooks, and usage is read from log files already on your Mac. The only network requests are weather (MET Norway) and update checks (GitHub).</p>
+    </details>
+    <details>
+      <summary>How do updates work?</summary>
+      <p>The app checks once a day and installs updates in one click. Every release is signed, so only genuine updates are accepted.</p>
+    </details>
+    <details>
+      <summary>I found a bug or have an idea</summary>
+      <p>Please <a href="https://github.com/Husainj/notchpilot/issues/new/choose">open an issue</a> or reach out on <a href="https://x.com/husain_j53">X</a>.</p>
+    </details>
+  </section>
 
-  <footer>
-    Made by <a href="https://x.com/husain_j53">@husain_j53</a>. Follow along for what's next ·
-    <a href="https://github.com/Husainj/notchpilot">GitHub</a> · <a href="install.html">Install guide</a>
-  </footer>
+  <!-- Final CTA -->
+  <section class="final">
+    <img src="icon.png" alt="" width="72" height="72">
+    <h2>Give your notch a job.</h2>
+    <div class="cta">
+      <a class="btn" href="https://github.com/Husainj/notchpilot/releases/latest">Download for macOS</a>
+      <a class="btn btn-ghost" href="https://x.com/husain_j53">Follow @husain_j53</a>
+    </div>
+  </section>
 </main>
+
+<footer class="foot">
+  <span>Made by <a href="https://x.com/husain_j53">@husain_j53</a></span>
+  <span><a href="https://github.com/Husainj/notchpilot">GitHub</a> · <a href="install.html">Install guide</a> · <a href="https://github.com/Husainj/notchpilot/releases">Releases</a> · MIT License</span>
+</footer>
+
+<script>
+  // Cycle the compact island through its states.
+  const states = [...document.querySelectorAll('#island .state')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const screen = document.querySelector('.screen');
+  let i = 0;
+  if (!reduce) setInterval(() => {
+    states[i].classList.remove('on');
+    i = (i + 1) % states.length;
+    states[i].classList.add('on');
+    document.getElementById('island').dataset.state = states[i].dataset.state;
+    // Once per cycle, open the island to show the full dashboard.
+    if (i === 0) { screen.classList.add('open'); setTimeout(() => screen.classList.remove('open'), 3800); }
+  }, 2600);
+  if (!reduce) setTimeout(() => { screen.classList.add('open'); setTimeout(() => screen.classList.remove('open'), 3800); }, 1200);
+
+  // Menu bar clock.
+  const clock = document.getElementById('clock');
+  const tick = () => clock.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  tick(); setInterval(tick, 30000);
+
+  // Copy the brew command.
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); } catch {}
+    const label = b.querySelector('.copy');
+    label.textContent = 'Copied!';
+    setTimeout(() => label.textContent = 'Copy', 1500);
+  }));
+</script>
 </body>
 </html>

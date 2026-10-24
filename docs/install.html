@@ -4,42 +4,63 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Installing NotchPilot</title>
+  <meta name="description" content="How to install NotchPilot and open it the first time on macOS.">
+  <meta name="theme-color" content="#08080c">
+  <link rel="icon" href="icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">NotchPilot</a>
+    <nav>
+      <a href="./#features">Features</a>
+      <a href="./#faq">FAQ</a>
+      <a href="https://github.com/Husainj/notchpilot">GitHub</a>
+    </nav>
+    <a class="btn btn-sm" href="https://github.com/Husainj/notchpilot/releases/latest">Download</a>
+  </div>
+</header>
+
+<main class="doc">
+  <span class="kicker">Install guide</span>
   <h1>Installing NotchPilot</h1>
   <p>NotchPilot is downloaded from GitHub and isn't notarized by Apple yet, so the first time you open it macOS asks you to confirm. You only do this once; updates install without it.</p>
-  <p class="small">With Homebrew: <code>brew install --cask husainj/tap/notchpilot</code>, then do step 2.</p>
+  <p class="note">Using Homebrew? Run <code>brew install --cask husainj/tap/notchpilot</code>, then skip to step 2.</p>
 
   <h2>1. Install</h2>
-  <ol>
+  <ol class="steps">
     <li>Download the latest <code>.dmg</code> from <a href="https://github.com/Husainj/notchpilot/releases/latest">GitHub Releases</a> and open it.</li>
     <li>Drag <strong>NotchPilot</strong> onto the <strong>Applications</strong> folder.</li>
   </ol>
 
   <h2>2. Open it the first time</h2>
-  <ol>
-    <li>Double-click NotchPilot in Applications. macOS shows <em>"Apple could not verify NotchPilot…"</em> — click <strong>Done</strong>.</li>
+  <ol class="steps">
+    <li>Double-click NotchPilot in Applications. macOS shows <em>"Apple could not verify NotchPilot…"</em>. Click <strong>Done</strong>.</li>
     <li>Open <strong>System Settings → Privacy &amp; Security</strong> and scroll down.</li>
     <li>Next to <em>"NotchPilot was blocked to protect your Mac"</em>, click <strong>Open Anyway</strong> and confirm with your password or Touch ID.</li>
   </ol>
   <!-- Add screenshots of each step here -->
-  <p class="small">Prefer Terminal? <code>xattr -dr com.apple.quarantine /Applications/NotchPilot.app</code> then open NotchPilot.</p>
+  <p class="small">Prefer Terminal? <code>xattr -dr com.apple.quarantine /Applications/NotchPilot.app</code>, then open NotchPilot.</p>
 
   <h2>3. Use it</h2>
-  <p>The island appears over your notch. Hover it to expand. Settings live in the menu bar icon.</p>
+  <p>The island appears over your notch. Hover it to expand, or press <kbd>⌥</kbd><kbd>⌘</kbd><kbd>N</kbd>. Settings live in the menu bar icon.</p>
 
   <h2>Optional permissions</h2>
-  <ul>
-    <li><strong>Accessibility</strong> — only for the custom volume/brightness HUD (Settings → System). After updating NotchPilot you may need to toggle it off and on again in System Settings → Privacy &amp; Security → Accessibility.</li>
-    <li><strong>Automation</strong> — lets NotchPilot read the current song from Music and Spotify.</li>
-    <li><strong>Calendars &amp; Reminders</strong> — shows your upcoming events and Join buttons for calls.</li>
-    <li><strong>Location</strong> — only for local weather; you can type a city instead.</li>
-    <li><strong>Camera</strong> — only for the optional Mirror tab.</li>
+  <p>NotchPilot only asks when you use a feature that needs one.</p>
+  <ul class="perms">
+    <li><strong>Accessibility</strong>: only for the custom volume/brightness HUD (Settings → System). After an update you may need to toggle it off and on again in System Settings → Privacy &amp; Security → Accessibility.</li>
+    <li><strong>Automation</strong>: lets NotchPilot read the current song from Music and Spotify.</li>
+    <li><strong>Calendars &amp; Reminders</strong>: shows upcoming events and Join buttons for calls.</li>
+    <li><strong>Location</strong>: only for local weather; you can type a city instead.</li>
+    <li><strong>Camera</strong>: only for the optional Mirror tab.</li>
   </ul>
-
-  <footer><a href="index.html">← Back</a></footer>
 </main>
+
+<footer class="foot">
+  <span>Made by <a href="https://x.com/husain_j53">@husain_j53</a></span>
+  <span><a href="./">← Home</a> · <a href="https://github.com/Husainj/notchpilot">GitHub</a> · MIT License</span>
+</footer>
 </body>
 </html>
