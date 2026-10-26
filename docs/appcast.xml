@@ -3,6 +3,20 @@
     <channel>
         <title>NotchPilot</title>
         <item>
+            <title>0.2.0</title>
+            <pubDate>Mon, 26 Oct 2026 13:49:01 +0530</pubDate>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>0.2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <description sparkle:format="markdown"><![CDATA[## What's new in 0.2.0
+
+- Screen Time: Pilot checks in when you've been scrolling too long, and shows your tasks
+- Tab icons moved to the bottom of the island, away from the camera
+]]></description>
+            <enclosure url="https://github.com/Husainj/NotchPilot/releases/download/v0.2.0/NotchPilot-0.2.0.dmg" length="3591252" type="application/octet-stream" sparkle:edSignature="tUAYpskFoeQ33TGKG6ShtjyZq9r3QA2y7VojDUkW5CZDm9duQ8Z6K46FwTuzF6cS0I7EQYNImUpKBovvNLdBBQ=="/>
+        </item>
+        <item>
             <title>0.1.0</title>
             <pubDate>Sat, 24 Oct 2026 11:01:53 +0530</pubDate>
             <sparkle:version>2</sparkle:version>
