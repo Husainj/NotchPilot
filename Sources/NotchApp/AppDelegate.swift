@@ -4,6 +4,7 @@ import ModuleCalendar
 import ModuleClipboard
 import ModuleMedia
 import ModuleMeeting
+import ModuleScreenTime
 import ModuleMirror
 import ModuleNotes
 import ModuleShelf
@@ -31,6 +32,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         registry.register(ClipboardModule())
         let calendar = CalendarModule()
         registry.register(MeetingModule(meetings: { calendar.upcomingMeetings }))
+        registry.register(ScreenTimeModule(tasks: { calendar.focusTasks },
+                                           completeTask: { calendar.completeTask($0) },
+                                           nextMeeting: { calendar.upcomingMeetings.first },
+                                           hasReminderAccess: { calendar.hasReminderAccess }))
         registry.register(TimersModule())
         registry.register(NotesModule())
         registry.register(calendar)

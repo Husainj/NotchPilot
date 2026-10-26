@@ -62,19 +62,15 @@ private struct OpenIslandView: View {
         let notch = model.geometry.notchSize
         let sideWidth = (NotchViewModel.openSize.width - 2 * Self.horizontalPadding - notch.width) / 2
         let selected = model.selectedModule
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
+            // The middle of this row sits behind the camera, so only the
+            // outer edges hold content; the tabs live at the bottom.
             HStack(spacing: 0) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 2) {
-                        ForEach(model.registry.enabled, id: \.id) { module in
-                            TabButton(systemImage: module.systemImage, title: module.title,
-                                      isSelected: module.id == selected?.id) {
-                                model.selectedModuleID = module.id
-                            }
-                        }
-                    }
-                }
-                .frame(width: sideWidth, alignment: .leading)
+                Text(selected?.title ?? "")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.white.opacity(0.7))
+                    .lineLimit(1)
+                    .frame(width: sideWidth, alignment: .leading)
                 Spacer(minLength: notch.width)
                 HStack(spacing: 8) {
                     ForEach(model.registry.enabled, id: \.id) { module in
@@ -95,9 +91,20 @@ private struct OpenIslandView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+
+            HStack(spacing: 2) {
+                ForEach(model.registry.enabled, id: \.id) { module in
+                    TabButton(systemImage: module.systemImage, title: module.title,
+                              isSelected: module.id == selected?.id) {
+                        model.selectedModuleID = module.id
+                    }
+                }
+            }
+            .padding(3)
+            .background(.white.opacity(0.06), in: Capsule())
         }
         .padding(.horizontal, Self.horizontalPadding)
-        .padding(.bottom, 14)
+        .padding(.bottom, 12)
         .foregroundStyle(.white)
     }
 }

@@ -23,7 +23,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>NotchPilot reads the current track from Music and Spotify and controls playback.</string>
+	<string>NotchPilot reads the current track from Music and Spotify, and the domain of the open website in your browser for Screen Time. Nothing leaves your Mac.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>NotchPilot shows your upcoming events in the island.</string>
 	<key>NSCameraUsageDescription</key>

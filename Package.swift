@@ -13,7 +13,7 @@ let package = Package(
             dependencies: [
                 "NotchShell",
                 "ModuleMedia", "ModuleSystem", "ModuleShelf", "ModuleClipboard",
-                "ModuleTimers", "ModuleNotes", "ModuleStats", "ModuleCalendar", "ModuleWeather", "ModuleMirror", "ModuleAI", "ModuleMeeting",
+                "ModuleTimers", "ModuleNotes", "ModuleStats", "ModuleCalendar", "ModuleWeather", "ModuleMirror", "ModuleAI", "ModuleMeeting", "ModuleScreenTime",
                 .product(name: "Sparkle", package: "Sparkle"),
             ],
             linkerSettings: [
@@ -34,6 +34,7 @@ let package = Package(
         .target(name: "ModuleMirror", dependencies: ["NotchShell"]),
         .target(name: "ModuleAI", dependencies: ["NotchShell"]),
         .target(name: "ModuleMeeting", dependencies: ["NotchShell"]),
+        .target(name: "ModuleScreenTime", dependencies: ["NotchShell"]),
         .testTarget(name: "NotchShellTests", dependencies: ["NotchShell"]),
         .testTarget(name: "ModuleClipboardTests", dependencies: ["ModuleClipboard"]),
         .testTarget(name: "ModuleMediaTests", dependencies: ["ModuleMedia"]),
@@ -41,5 +42,6 @@ let package = Package(
         .testTarget(name: "ModuleStatsTests", dependencies: ["ModuleStats"]),
         .testTarget(name: "ModuleAITests", dependencies: ["ModuleAI"]),
         .testTarget(name: "ModuleMeetingTests", dependencies: ["ModuleMeeting", "NotchShell"]),
+        .testTarget(name: "ModuleScreenTimeTests", dependencies: ["ModuleScreenTime", "NotchShell"]),
     ]
 )

@@ -46,7 +46,8 @@ public final class NotchWindowController {
             geometry: NotchGeometry(screenWidth: 0, safeAreaTop: 0, leftAuxWidth: nil, rightAuxWidth: nil),
             registry: registry
         )
-        model.openHandler = { [weak self] in self?.openProgrammatically() }
+        model.openHandler = { [weak self] takeFocus in self?.openProgrammatically(takeFocus: takeFocus) ?? false }
+        model.closeHandler = { [weak self] in self?.setState(.closed) }
     }
 
     public func show() {
@@ -245,12 +246,14 @@ public final class NotchWindowController {
             && pasteboard.types?.contains(.fileURL) == true
     }
 
-    private func openProgrammatically() {
-        guard panel != nil, !isHiddenForFullScreen else { return }
+    @discardableResult
+    private func openProgrammatically(takeFocus: Bool = true) -> Bool {
+        guard panel != nil, !isHiddenForFullScreen else { return false }
         dwellTask?.cancel(); closeTask?.cancel(); closeTask = nil
         hasHoveredSinceOpen = hotRect().contains(NSEvent.mouseLocation)
         setState(.open)
-        panel?.makeKey()
+        if takeFocus { panel?.makeKey() }
+        return true
     }
 
     private func setState(_ state: NotchState) {

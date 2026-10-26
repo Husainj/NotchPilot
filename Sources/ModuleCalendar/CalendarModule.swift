@@ -26,6 +26,21 @@ public final class CalendarModule: NotchModule {
         }
     }
 
+    /// Open reminders worth doing now: overdue and due today first, then
+    /// undated, then upcoming (for the Screen Time nudge).
+    public var focusTasks: [FocusTask] {
+        let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: Date()))!
+        let items = store.reminders
+        let now = items.filter { ($0.due ?? .distantFuture) < endOfToday }
+        let undated = items.filter { $0.due == nil }
+        let later = items.filter { ($0.due.map { $0 >= endOfToday }) ?? false }
+        return (now + undated + later).prefix(5).map { FocusTask(id: $0.id, title: $0.title, due: $0.due) }
+    }
+
+    public var hasReminderAccess: Bool { store.hasReminderAccess }
+
+    public func completeTask(_ id: String) { store.complete(id) }
+
     /// "Meeting in 5m" beside the notch shortly before an event.
     public var compactActivity: CompactActivity? {
         guard let event = store.imminentEvent else { return nil }

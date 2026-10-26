@@ -33,10 +33,19 @@ public extension NotchModule {
 /// What modules can ask of the island.
 @MainActor
 public protocol NotchContext: AnyObject {
-    /// Expand the island and select the module's tab.
-    func open(moduleID: String)
+    /// Expand the island and select the module's tab. Pass `takeFocus: false`
+    /// to leave keyboard focus with the user's app. Returns false when the
+    /// island can't open right now (e.g. hidden for a full-screen app).
+    @discardableResult
+    func open(moduleID: String, takeFocus: Bool) -> Bool
+    /// Collapse the island.
+    func close()
     /// Show a short-lived activity (e.g. a volume HUD) that preempts module activities.
     func showTransient(_ activity: CompactActivity, for duration: Duration)
+}
+
+public extension NotchContext {
+    func open(moduleID: String) { open(moduleID: moduleID, takeFocus: true) }
 }
 
 /// Content drawn on both sides of the physical notch while the island is closed.

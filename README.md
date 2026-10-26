@@ -17,6 +17,9 @@
   - A live mic/camera indicator that shows which app is listening.
   - Call detection with a call timer, and automatic unmute after the call.
   - One-click **Join** for Zoom, Meet and Teams events.
+- **Screen Time with a nudge**
+  - Tracks time per app and per website (domain only), with a focus score, daily streak and weekly chart.
+  - After 30 minutes of Instagram, YouTube, X, Reddit and similar, Pilot the mascot drops down from the notch with a check-in and your Reminders tasks: Back to work, 5 more min, or Taking a break. It gets firmer if you keep going, but never blocks anything.
 - **Keep awake**
   - Stops idle sleep while an AI agent is working, then lets the Mac sleep normally.
   - Manual 30m / 1h / 2h / ∞, with battery and time limits.
@@ -47,7 +50,7 @@ You only do this once; updates install automatically. ([Illustrated guide](https
 | Permission | Used for |
 |---|---|
 | Accessibility | Replacing the volume/brightness HUD |
-| Automation (Music/Spotify) | Reading the current track from those apps |
+| Automation (Music/Spotify, browsers) | Reading the current track; reading the current website's domain for Screen Time |
 | Calendars, Reminders | Agenda, reminders, meeting Join buttons |
 | Location | Local weather (or type a city instead) |
 | Camera | The Mirror tab (off by default) |
@@ -74,6 +77,7 @@ Sources/
 ├─ NotchShell       island panel, notch geometry, open/close state machine, module host, hotkeys,
 │                   shared services (AppInfo, KeepAwake, CallStatus, MeetingLink)
 ├─ ModuleAI         coding-agent sessions (hooks → ~/.notch/notch-agent-hook → AgentEvents/), usage from ~/.claude + ~/.codex
+├─ ModuleScreenTime app/site usage, doomscroll nudge with the Pilot mascot
 ├─ ModuleMeeting    mic/camera in use (CoreAudio/CoreMediaIO), system-wide mute, call detection, Join links
 ├─ ModuleMedia      now playing for any app (via Vendor/mediaremote-adapter) + controls
 ├─ ModuleSystem     volume/brightness HUD, battery, keep-awake controls

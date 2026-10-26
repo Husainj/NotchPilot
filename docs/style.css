@@ -142,6 +142,7 @@ kbd { display: inline-block; min-width: 24px; text-align: center; padding: 1px 6
 .card.big h3 { font-size: 24px; }
 .card.big p { font-size: 16px; }
 .card.wide { grid-column: span 2; }
+.card.full { grid-column: 1 / -1; }
 .ico { font-size: 26px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: rgba(255, 255, 255, .06); margin-bottom: 14px; }
 
 /* Privacy */
