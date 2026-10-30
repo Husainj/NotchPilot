@@ -406,7 +406,7 @@ private struct SmallButton: View {
                 .frame(width: 30, height: 24)
                 .background(.white.opacity(0.12), in: Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
     }
 }
 

@@ -40,6 +40,10 @@ public protocol NotchContext: AnyObject {
     func open(moduleID: String, takeFocus: Bool) -> Bool
     /// Collapse the island.
     func close()
+    /// Select a module's tab without opening the island.
+    func select(moduleID: String)
+    /// Whether the pointer is over the island right now.
+    var isPointerInside: Bool { get }
     /// Show a short-lived activity (e.g. a volume HUD) that preempts module activities.
     func showTransient(_ activity: CompactActivity, for duration: Duration)
 }

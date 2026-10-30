@@ -34,6 +34,8 @@
 	<string>© 2026 Husain Jhalodwala. MIT License.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>NotchPilot uses your approximate location to show local weather.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>NotchPilot records your microphone only when you turn on Mic for a screen recording.</string>
 	<key>NSRemindersFullAccessUsageDescription</key>
 	<string>NotchPilot shows your reminders and lets you check them off from the island.</string>
 	<key>SUEnableAutomaticChecks</key>

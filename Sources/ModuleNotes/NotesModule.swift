@@ -127,7 +127,7 @@ private struct NotesView: View {
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(accent)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.island)
                 .padding(.top, 4)
             }
             .frame(width: 150)
@@ -153,7 +153,7 @@ private struct NotesView: View {
                     Button { delete(module.selectedID) } label: {
                         Image(systemName: "trash").font(.system(size: 11))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                     .foregroundStyle(.white.opacity(0.5))
                     .padding(8)
                     .help("Delete note")
@@ -173,7 +173,7 @@ private struct NotesView: View {
                 .padding(.vertical, 4)
                 .background(isSelected ? accent.opacity(0.2) : .clear, in: RoundedRectangle(cornerRadius: 6))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
     }
 
     private func delete(_ id: UUID) {

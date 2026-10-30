@@ -154,6 +154,7 @@ public final class ScreenTimeModule: NotchModule {
         }
 
         let suppressed = !nudgesEnabled || (quietDuringCalls && CallStatus.shared.isInCall)
+            || CaptureStatus.shared.isRecording
         let wasStreaking = tracker.streakStart != nil
         if let result = tracker.update(key: sample.key, isDistracting: distracting, suppressed: suppressed, now: now) {
             present(result)

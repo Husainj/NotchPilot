@@ -74,7 +74,7 @@ private struct SummaryCard: View {
                     Text("☕ On a break").font(.system(size: 11, weight: .semibold))
                     Spacer()
                     Button("End") { module.endBreak() }
-                        .buttonStyle(.plain)
+                        .buttonStyle(.island)
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(accent)
                 }

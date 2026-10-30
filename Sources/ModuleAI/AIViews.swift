@@ -289,7 +289,7 @@ private struct ConnectButtons: View {
                             .padding(.vertical, 4)
                             .background(.white.opacity(0.12), in: Capsule())
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                 }
             }
             if let error = module.hookError {
@@ -332,7 +332,7 @@ private struct SessionRow: View {
                 Button { module.dismiss(session) } label: {
                     Image(systemName: "xmark").font(.system(size: 9, weight: .bold))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.island)
                 .foregroundStyle(.white.opacity(0.5))
             }
         }

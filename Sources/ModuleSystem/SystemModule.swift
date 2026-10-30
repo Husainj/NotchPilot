@@ -409,7 +409,7 @@ private struct KeepAwakeRow: View {
             ForEach(Self.options, id: \.label) { option in
                 let selected = hold != nil && optionMatches(option.minutes, hold)
                 Button(option.label) { module.keepAwake(minutes: option.minutes) }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                     .font(.system(size: 11, weight: .semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
@@ -417,7 +417,7 @@ private struct KeepAwakeRow: View {
             }
             if hold != nil {
                 Button("Off") { module.stopKeepAwake() }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                     .font(.system(size: 11, weight: .semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)

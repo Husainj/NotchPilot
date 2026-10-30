@@ -142,7 +142,7 @@ struct JoinButton: View {
                 .foregroundStyle(.black)
                 .background(accent, in: Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
         .help("Join on \(MeetingLink.service(for: url)?.name ?? "the call")")
     }
 }
@@ -179,7 +179,7 @@ private struct RemindersColumn: View {
                                 Button { store.complete(reminder.id) } label: {
                                     Image(systemName: "circle").foregroundStyle(reminder.color)
                                 }
-                                .buttonStyle(.plain)
+                                .buttonStyle(.island)
                                 .help("Mark as done")
                                 VStack(alignment: .leading, spacing: 1) {
                                     Text(reminder.title).font(.system(size: 12)).lineLimit(2)

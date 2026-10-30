@@ -57,7 +57,7 @@ private struct ShelfView: View {
                     }
                     Button("Clear") { store.clear() }
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.island)
                 .font(.system(size: 11, weight: .medium))
             }
         }
@@ -121,7 +121,7 @@ private struct ShelfTile: View {
                             .font(.system(size: 14))
                             .foregroundStyle(.white, .gray)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                     .offset(x: 6, y: -4)
                 }
             }

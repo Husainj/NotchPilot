@@ -1,6 +1,7 @@
 import AppKit
 import ModuleAI
 import ModuleCalendar
+import ModuleCapture
 import ModuleClipboard
 import ModuleMedia
 import ModuleMeeting
@@ -30,6 +31,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         registry.register(AIModule())
         registry.register(ShelfModule())
         registry.register(ClipboardModule())
+        registry.register(CaptureModule())
         let calendar = CalendarModule()
         registry.register(MeetingModule(meetings: { calendar.upcomingMeetings }))
         registry.register(ScreenTimeModule(tasks: { calendar.focusTasks },
@@ -74,6 +76,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// First launch shows a short welcome; after an update, a one-time "What's new".
     private func showWelcomeOrWhatsNew() {
+        #if DEBUG
+        // `open build/NotchPilot.app --args --settings` jumps straight to Settings.
+        if CommandLine.arguments.contains("--settings") { return openSettings() }
+        #endif
         let defaults = UserDefaults.standard
         let current = AppInfo.version
         let lastSeen = defaults.string(forKey: "app.lastSeenVersion")

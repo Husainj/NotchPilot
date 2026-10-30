@@ -20,6 +20,10 @@
 - **Screen Time with a nudge**
   - Tracks time per app and per website (domain only), with a focus score, daily streak and weekly chart.
   - After 30 minutes of Instagram, YouTube, X, Reddit and similar, Pilot the mascot drops down from the notch with a check-in and your Reminders tasks: Back to work, 5 more min, or Taking a break. It gets firmer if you keep going, but never blocks anything.
+- **Screen recording and screenshots**
+  - Record the whole screen, one window or app, or a dragged area, with system audio and/or your mic, from the Capture tab or ⌃⌥⌘R. The notch shows a red dot and timer while recording.
+  - Screenshots of the screen, a window or an area (⌃⌥⌘S), saved or copied. NotchPilot never appears in your captures.
+  - When you stop, the notch shows a preview to open, copy, drag out or delete. Recording needs macOS 15+.
 - **Keep awake**
   - Stops idle sleep while an AI agent is working, then lets the Mac sleep normally.
   - Manual 30m / 1h / 2h / ∞, with battery and time limits.
@@ -53,6 +57,8 @@ You only do this once; updates install automatically. ([Illustrated guide](https
 | Automation (Music/Spotify, browsers) | Reading the current track; reading the current website's domain for Screen Time |
 | Calendars, Reminders | Agenda, reminders, meeting Join buttons |
 | Location | Local weather (or type a city instead) |
+| Screen Recording | Recordings and screenshots in the Capture tab |
+| Microphone | Recording your voice with a screen recording |
 | Camera | The Mirror tab (off by default) |
 
 Meeting mode needs no microphone permission. It reads the mic's on/off state and mutes it, but never records.
@@ -78,6 +84,7 @@ Sources/
 │                   shared services (AppInfo, KeepAwake, CallStatus, MeetingLink)
 ├─ ModuleAI         coding-agent sessions (hooks → ~/.notch/notch-agent-hook → AgentEvents/), usage from ~/.claude + ~/.codex
 ├─ ModuleScreenTime app/site usage, doomscroll nudge with the Pilot mascot
+├─ ModuleCapture    screen recording (ScreenCaptureKit SCRecordingOutput) and screenshots
 ├─ ModuleMeeting    mic/camera in use (CoreAudio/CoreMediaIO), system-wide mute, call detection, Join links
 ├─ ModuleMedia      now playing for any app (via Vendor/mediaremote-adapter) + controls
 ├─ ModuleSystem     volume/brightness HUD, battery, keep-awake controls

@@ -45,7 +45,7 @@ private struct MicCard: View {
                         .foregroundStyle(mic.isMuted ? .white : .black)
                         .background(mic.isMuted ? Color.red : Color.white, in: Circle())
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.island)
                 .disabled(!mic.canMute)
                 .help(mic.isMuted ? "Unmute" : "Mute for every app")
                 VStack(alignment: .leading, spacing: 3) {
@@ -197,7 +197,7 @@ private struct MeetingRow: View {
                             .foregroundStyle(.black)
                             .background(accent, in: Capsule())
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                     .help("Join on \(MeetingLink.service(for: url)?.name ?? "the call")")
                 }
             }

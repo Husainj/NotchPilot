@@ -15,13 +15,15 @@ public final class NotchViewModel: NotchContext {
 
     /// Largest size the island grows to; the panel is always this big and
     /// the shape animates inside it.
-    public static let openSize = CGSize(width: 680, height: 262)
+    public static let openSize = CGSize(width: 680, height: 272)
     /// Extra room around the open island so the theme glow isn't clipped.
     static let glowMargin = CGSize(width: 24, height: 24)
     static var panelSize: CGSize {
         CGSize(width: openSize.width + 2 * glowMargin.width, height: openSize.height + glowMargin.height)
     }
 
+    /// Updated on every mouse move, so not observed.
+    @ObservationIgnored public internal(set) var isPointerInside = false
     @ObservationIgnored var openHandler: ((Bool) -> Bool)?
     @ObservationIgnored var closeHandler: (() -> Void)?
     @ObservationIgnored private var transientTask: Task<Void, Never>?
@@ -41,6 +43,10 @@ public final class NotchViewModel: NotchContext {
 
     public func close() {
         closeHandler?()
+    }
+
+    public func select(moduleID: String) {
+        selectedModuleID = moduleID
     }
 
     public func showTransient(_ activity: CompactActivity, for duration: Duration) {

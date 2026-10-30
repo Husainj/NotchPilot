@@ -132,15 +132,18 @@ private struct ControlButton: View {
     let systemImage: String
     let size: CGFloat
     let action: () -> Void
+    @State private var hovering = false
 
     var body: some View {
         Button(action: action) {
             Image(systemName: systemImage)
                 .font(.system(size: size, weight: .semibold))
-                .frame(width: 32, height: 28)
-                .contentShape(Rectangle())
+                .contentTransition(.symbolEffect(.replace))
+                .frame(width: size + 24, height: size + 18)
+                .background(.white.opacity(hovering ? 0.1 : 0), in: Circle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
+        .onHover { hovering = $0 }
     }
 }
 

@@ -26,8 +26,16 @@ cask "notchpilot" do
     "~/.notch",
   ]
 
+  # The app is ad-hoc signed (not notarized yet), so Gatekeeper would block the
+  # first launch. Clear the download quarantine so it opens normally.
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", "#{appdir}/NotchPilot.app"]
+  end
+
   caveats <<~EOS
-    The app isn't notarized yet. On first launch, open System Settings → Privacy & Security
-    and click "Open Anyway". Updates install automatically after that.
+    NotchPilot isn't notarized by Apple yet. Homebrew clears the download quarantine so it
+    opens normally. If macOS still blocks it, run:
+      xattr -dr com.apple.quarantine /Applications/NotchPilot.app
   EOS
 end

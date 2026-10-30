@@ -94,7 +94,7 @@ private struct TasksCard: View {
                     .font(.system(size: 11))
                     .foregroundStyle(.white.opacity(0.6))
                 Button("Connect Reminders") { module.openCalendar() }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.island)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(accent)
             } else if tasks.isEmpty {
@@ -149,7 +149,7 @@ private struct TaskRow: View {
                     .font(.system(size: 13))
                     .foregroundStyle(done ? .green : .white.opacity(0.6))
             }
-            .buttonStyle(.plain)
+            .buttonStyle(.island)
             .help("Mark as done")
             Text(task.title)
                 .font(.system(size: 11.5, weight: .medium))
@@ -181,7 +181,7 @@ struct PrimaryButton: View {
                 .foregroundStyle(.black)
                 .background(color, in: Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
     }
 }
 
@@ -200,6 +200,6 @@ struct GhostButton: View {
                 .foregroundStyle(.white.opacity(0.85))
                 .background(.white.opacity(0.1), in: Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
     }
 }

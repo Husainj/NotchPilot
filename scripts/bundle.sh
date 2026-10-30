@@ -8,6 +8,17 @@ source "$(dirname "$0")/env.sh"
 
 CONFIG="${1:-release}"
 IDENTITY="${SIGN_IDENTITY:--}"
+# Debug builds: sign with a local "Apple Development" certificate when there
+# is one. macOS keys permissions (Screen Recording, Accessibility…) to the
+# signature; ad-hoc signatures change on every build, so permissions would
+# reset each time. Override with DEV_SIGN_IDENTITY, or set it to "-" for ad-hoc.
+DEV_SIGNING=0
+if [ "$CONFIG" = "debug" ] && [ -z "${SIGN_IDENTITY:-}" ]; then
+    IDENTITY="${DEV_SIGN_IDENTITY:-$(security find-identity -v -p codesigning 2>/dev/null \
+        | awk '/"Apple Development/ {print $2; exit}')}"
+    IDENTITY="${IDENTITY:--}"
+    [ "$IDENTITY" != "-" ] && DEV_SIGNING=1
+fi
 APP="$ROOT/build/$APP_NAME.app"
 
 swift build -c "$CONFIG" "${SWIFT_FLAGS[@]}"
@@ -34,7 +45,9 @@ cp "$ROOT/Vendor/mediaremote-adapter/LICENSE" "$APP/Contents/Resources/mediaremo
 
 # Sign inside-out: Sparkle's helpers, the framework, then the app.
 SIGN_ARGS=(--force --sign "$IDENTITY")
-if [ "$IDENTITY" != "-" ]; then
+# Hardened runtime only for distribution builds (it needs entitlements for the
+# mic, camera and Apple Events, and notarization requires it).
+if [ "$IDENTITY" != "-" ] && [ "$DEV_SIGNING" = "0" ]; then
     SIGN_ARGS+=(--options runtime --timestamp)
 fi
 SPARKLE="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"

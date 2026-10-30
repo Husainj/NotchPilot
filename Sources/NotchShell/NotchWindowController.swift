@@ -209,6 +209,7 @@ public final class NotchWindowController {
     private func mouseMoved(to point: CGPoint, dragging: Bool) {
         guard !isHiddenForFullScreen else { return }
         let inside = hotRect().contains(point)
+        model.isPointerInside = inside
         if inside {
             hasHoveredSinceOpen = true
             closeTask?.cancel(); closeTask = nil

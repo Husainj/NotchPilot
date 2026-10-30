@@ -19,8 +19,11 @@ final class SettingsWindowController {
             let root = SettingsView(registry: registry, updater: updater)
             let window = NSWindow(contentViewController: NSHostingController(rootView: root))
             window.title = "\(AppInfo.name) Settings"
-            window.styleMask = [.titled, .closable, .miniaturizable]
+            window.styleMask = [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
+            window.toolbarStyle = .unified
             window.isReleasedWhenClosed = false
+            window.setContentSize(NSSize(width: 780, height: 580))
+            window.setFrameAutosaveName("SettingsWindow")
             window.center()
             self.window = window
         }
@@ -29,25 +32,96 @@ final class SettingsWindowController {
     }
 }
 
+private enum SettingsPane: Hashable {
+    case general, modules, about
+    case module(String)
+}
+
+/// A sidebar of panes, like System Settings, so every module's settings
+/// stay reachable however many modules there are.
 private struct SettingsView: View {
     let registry: ModuleRegistry
     let updater: Updater
+    @State private var selection: SettingsPane? = .general
+
+    private var configurable: [any NotchModule] {
+        registry.all.filter { $0.makeSettingsView() != nil }
+    }
 
     var body: some View {
-        TabView {
-            GeneralSettings()
-                .tabItem { Label("General", systemImage: "gearshape") }
-            ModulesSettings(registry: registry)
-                .tabItem { Label("Modules", systemImage: "square.grid.2x2") }
-            ForEach(registry.all, id: \.id) { module in
-                if let view = module.makeSettingsView() {
-                    view.tabItem { Label(module.title, systemImage: module.systemImage) }
+        NavigationSplitView {
+            List(selection: $selection) {
+                Section {
+                    Label("General", systemImage: "gearshape").tag(SettingsPane.general)
+                    Label("Modules", systemImage: "square.grid.2x2").tag(SettingsPane.modules)
+                }
+                Section("Modules") {
+                    ForEach(configurable, id: \.id) { module in
+                        Label(module.title, systemImage: module.systemImage)
+                            .foregroundStyle(registry.isEnabled(module.id) ? .primary : .secondary)
+                            .tag(SettingsPane.module(module.id))
+                    }
+                }
+                Section {
+                    Label("About", systemImage: "info.circle").tag(SettingsPane.about)
                 }
             }
-            AboutSettings(updater: updater)
-                .tabItem { Label("About", systemImage: "info.circle") }
+            .listStyle(.sidebar)
+            .navigationSplitViewColumnWidth(min: 190, ideal: 200, max: 240)
+            .toolbar(removing: .sidebarToggle)
+        } detail: {
+            detail
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .navigationTitle(title)
         }
-        .frame(width: 560, height: 520)
+        .frame(minWidth: 720, minHeight: 500)
+    }
+
+    @ViewBuilder private var detail: some View {
+        switch selection ?? .general {
+        case .general:
+            GeneralSettings()
+        case .modules:
+            ModulesSettings(registry: registry)
+        case .about:
+            AboutSettings(updater: updater)
+        case let .module(id):
+            if let module = registry.all.first(where: { $0.id == id }), let view = module.makeSettingsView() {
+                VStack(spacing: 0) {
+                    if !registry.isEnabled(id) {
+                        DisabledBanner { registry.setEnabled(id, true) }
+                    }
+                    view
+                }
+                .id(id)
+            }
+        }
+    }
+
+    private var title: String {
+        switch selection ?? .general {
+        case .general: "General"
+        case .modules: "Modules"
+        case .about: "About"
+        case let .module(id): registry.all.first { $0.id == id }?.title ?? ""
+        }
+    }
+}
+
+private struct DisabledBanner: View {
+    let enable: () -> Void
+
+    var body: some View {
+        HStack {
+            Image(systemName: "eye.slash")
+            Text("This module is turned off, so it isn't in the island.")
+            Spacer()
+            Button("Turn On", action: enable)
+        }
+        .font(.callout)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .background(.yellow.opacity(0.15))
     }
 }
 
@@ -99,10 +173,10 @@ private struct GeneralSettings: View {
             }
 
             Section("Appearance") {
-                Picker("Theme", selection: $settings.theme) {
-                    ForEach(NotchTheme.allCases, id: \.self) { Text($0.title).tag($0) }
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Theme")
+                    ThemePicker(theme: $settings.theme)
                 }
-                .pickerStyle(.segmented)
                 Toggle("Show live activities beside the notch", isOn: $settings.showLiveActivities)
                 Picker("When nothing is live, show", selection: $settings.idleDisplay) {
                     ForEach(IdleDisplay.allCases, id: \.self) { Text($0.title).tag($0) }

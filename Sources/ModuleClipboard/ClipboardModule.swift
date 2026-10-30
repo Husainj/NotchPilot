@@ -151,7 +151,7 @@ private struct ClipboardRow: View {
                     .frame(width: 70, alignment: .trailing)
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.island)
         .font(.system(size: 11))
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
