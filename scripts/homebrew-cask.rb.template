@@ -28,9 +28,9 @@ cask "notchpilot" do
 
   # The app is ad-hoc signed (not notarized yet), so Gatekeeper would block the
   # first launch. Clear the download quarantine so it opens normally.
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/NotchPilot.app"]
+  app_path = "#{appdir}/NotchPilot.app"
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", app_path], must_succeed: false
   end
 
   caveats <<~EOS
