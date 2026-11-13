@@ -158,6 +158,7 @@ private struct ClipboardRow: View {
         .background(isHovering ? Color.white.opacity(0.1) : .clear, in: RoundedRectangle(cornerRadius: 6))
         .contentShape(Rectangle())
         .onHover { isHovering = $0 }
+        .pointingHandCursor()
         .onTapGesture(perform: copy)
         .help(item.sourceAppName.map { "Copied from \($0) — click to copy" } ?? "Click to copy")
     }

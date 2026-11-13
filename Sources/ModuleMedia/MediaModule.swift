@@ -48,6 +48,7 @@ struct MediaExpandedView: View {
                                 .offset(x: 6, y: 6)
                         }
                     }
+                    .pointingHandCursor()
                     .onTapGesture { service.openPlayer() }
                     .help("Open \(service.sourceAppName ?? "player")")
                 VStack(alignment: .leading, spacing: 6) {

@@ -159,6 +159,7 @@ private struct MicChip: View {
             module.microphone.toggle()
         }
         .menuStyle(.button)
+        .pointingHandCursor()
         .buttonStyle(.plain)
         .menuIndicator(.hidden)
         .fixedSize()
@@ -187,6 +188,7 @@ private struct ScreenshotButton: View {
             module.takeScreenshot(module.mode)
         }
         .menuStyle(.button)
+        .pointingHandCursor()
         .buttonStyle(.plain)
         .menuIndicator(.hidden)
         .fixedSize()
@@ -266,6 +268,7 @@ private struct RecentTile: View {
                 }
             }
             .onHover { hovering = $0 }
+            .pointingHandCursor()
             .onTapGesture(count: 2) { module.open(item) }
             .onDrag { NSItemProvider(contentsOf: item.url) ?? NSItemProvider() }
             .contextMenu {
@@ -419,6 +422,7 @@ private struct SavedCard: View {
                             .background(.black.opacity(0.5), in: Circle())
                     }
                 }
+                .pointingHandCursor()
                 .onTapGesture { module.open(item) }
                 .onDrag { NSItemProvider(contentsOf: item.url) ?? NSItemProvider() }
                 .help("Drag anywhere, or click to open")

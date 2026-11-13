@@ -340,6 +340,7 @@ private struct SessionRow: View {
         .background(.white.opacity(hovering ? 0.08 : 0), in: RoundedRectangle(cornerRadius: 8))
         .contentShape(Rectangle())
         .onHover { hovering = $0 }
+        .pointingHandCursor()
         .onTapGesture { module.focus(session) }
         .help(session.message ?? "Click to switch to \(session.agent.name)")
     }

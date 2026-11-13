@@ -116,7 +116,6 @@ private struct CompactActivityView: View {
 private struct OpenIslandView: View {
     let model: NotchViewModel
     @Namespace private var tabs
-    @Environment(\.notchAccent) private var accent
 
     private static let horizontalPadding: CGFloat = 26
 
@@ -124,20 +123,19 @@ private struct OpenIslandView: View {
         let notch = model.geometry.notchSize
         let sideWidth = (NotchViewModel.openSize.width - 2 * Self.horizontalPadding - notch.width) / 2
         let selected = model.selectedModule
+        let accent = ModulePalette.accent(for: selected?.id)
         VStack(spacing: 8) {
             // The middle of this row sits behind the camera, so only the
             // outer edges hold content; the tabs live at the bottom.
             HStack(spacing: 0) {
-                HStack(spacing: 6) {
+                HStack(spacing: 7) {
                     if let selected {
-                        Image(systemName: selected.systemImage)
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundStyle(accent)
+                        IconBadge(selected.systemImage, color: accent, size: 20)
                             .contentTransition(.symbolEffect(.replace))
                     }
                     Text(selected?.title ?? "")
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(.white.opacity(0.85))
+                        .foregroundStyle(.white.opacity(0.9))
                         .contentTransition(.opacity)
                         .lineLimit(1)
                 }
@@ -165,11 +163,14 @@ private struct OpenIslandView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .environment(\.notchAccent, accent)
+            .tint(accent)
             .animation(Motion.content, value: selected?.id)
 
             HStack(spacing: 2) {
                 ForEach(model.registry.enabled, id: \.id) { module in
                     TabButton(systemImage: module.systemImage, title: module.title,
+                              color: ModulePalette.accent(for: module.id),
                               isSelected: module.id == selected?.id, namespace: tabs) {
                         model.selectedModuleID = module.id
                     }
@@ -177,7 +178,7 @@ private struct OpenIslandView: View {
             }
             .padding(3)
             .background(.white.opacity(0.07), in: Capsule())
-            .overlay(Capsule().strokeBorder(.white.opacity(0.06)))
+            .overlay(Capsule().strokeBorder(.white.opacity(0.08)))
             .animation(Motion.content, value: selected?.id)
         }
         .padding(.horizontal, Self.horizontalPadding)
@@ -186,33 +187,47 @@ private struct OpenIslandView: View {
     }
 }
 
+/// A tab: just the icon, or icon plus name when selected.
 private struct TabButton: View {
     let systemImage: String
     let title: String
+    let color: Color
     let isSelected: Bool
     let namespace: Namespace.ID
     let action: () -> Void
-    @Environment(\.notchAccent) private var accent
     @State private var hovering = false
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: systemImage)
-                .font(.system(size: 14, weight: .semibold))
-                .symbolEffect(.bounce, value: isSelected)
-                .frame(width: 36, height: 30)
-                .foregroundStyle(isSelected ? accent : .white.opacity(hovering ? 0.9 : 0.55))
-                .background {
-                    if isSelected {
-                        Capsule()
-                            .fill(accent.opacity(0.2))
-                            .overlay(Capsule().strokeBorder(accent.opacity(0.35), lineWidth: 0.5))
-                            .shadow(color: accent.opacity(0.35), radius: 6)
-                            .matchedGeometryEffect(id: "selectedTab", in: namespace)
-                    } else if hovering {
-                        Capsule().fill(.white.opacity(0.08))
-                    }
+            HStack(spacing: 5) {
+                Image(systemName: systemImage)
+                    .symbolVariant(.fill)
+                    .font(.system(size: 14, weight: .semibold))
+                    .symbolEffect(.bounce, value: isSelected)
+                    .frame(width: 18)
+                if isSelected {
+                    Text(title)
+                        .font(.system(size: 12, weight: .semibold))
+                        .lineLimit(1)
+                        .fixedSize()
+                        .transition(.opacity.combined(with: .scale(scale: 0.8, anchor: .leading)))
                 }
+            }
+            .padding(.horizontal, isSelected ? 11 : 8)
+            .frame(height: 30)
+            .foregroundStyle(isSelected ? color : color.opacity(hovering ? 1 : 0.72))
+            .background {
+                if isSelected {
+                    Capsule()
+                        .fill(LinearGradient(colors: [color.opacity(0.32), color.opacity(0.16)],
+                                             startPoint: .top, endPoint: .bottom))
+                        .overlay(Capsule().strokeBorder(color.opacity(0.45), lineWidth: 0.75))
+                        .shadow(color: color.opacity(0.4), radius: 6)
+                        .matchedGeometryEffect(id: "selectedTab", in: namespace)
+                } else if hovering {
+                    Capsule().fill(color.opacity(0.14))
+                }
+            }
         }
         .buttonStyle(.island)
         .onHover { hovering = $0 }

@@ -138,6 +138,7 @@ private struct ShelfTile: View {
             guard let url else { return NSItemProvider() }
             return NSItemProvider(contentsOf: url) ?? NSItemProvider()
         }
+        .pointingHandCursor()
         .onTapGesture(count: 2) {
             if let url { NSWorkspace.shared.open(url) }
         }

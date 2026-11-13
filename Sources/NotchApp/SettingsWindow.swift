@@ -177,6 +177,7 @@ private struct GeneralSettings: View {
                     Text("Theme")
                     ThemePicker(theme: $settings.theme)
                 }
+                Toggle("Colourful tabs (each tab gets its own colour)", isOn: $settings.colorfulTabs)
                 Toggle("Show live activities beside the notch", isOn: $settings.showLiveActivities)
                 Picker("When nothing is live, show", selection: $settings.idleDisplay) {
                     ForEach(IdleDisplay.allCases, id: \.self) { Text($0.title).tag($0) }

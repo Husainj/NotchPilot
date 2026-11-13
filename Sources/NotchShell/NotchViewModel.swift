@@ -77,6 +77,12 @@ public final class NotchViewModel: NotchContext {
         switch settings.idleDisplay {
         case .nothing:
             return nil
+        case .eyes:
+            return CompactActivity(id: "idle-eyes", priority: -1, sideWidth: 26) {
+                NotchEye().frame(maxWidth: .infinity, alignment: .trailing)
+            } trailing: {
+                NotchEye().frame(maxWidth: .infinity, alignment: .leading)
+            }
         case .clock:
             return CompactActivity(id: "idle-clock", priority: -1, sideWidth: 46) {
                 EmptyView()

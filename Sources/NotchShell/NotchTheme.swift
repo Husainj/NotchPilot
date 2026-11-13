@@ -120,11 +120,12 @@ public struct ThemePicker: View {
 
 /// What the closed notch shows when no module has a live activity.
 public enum IdleDisplay: String, CaseIterable, Sendable {
-    case nothing, clock, date, customText
+    case nothing, eyes, clock, date, customText
 
     public var title: String {
         switch self {
         case .nothing: "Nothing"
+        case .eyes: "Eyes"
         case .clock: "Time"
         case .date: "Date"
         case .customText: "Custom text"

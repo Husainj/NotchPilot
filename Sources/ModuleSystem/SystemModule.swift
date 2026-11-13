@@ -13,6 +13,7 @@ public final class SystemModule: NotchModule {
     private(set) var volume: Float = AudioController.volume ?? 0
     private(set) var isMuted = AudioController.isMuted
     private(set) var brightness: Float? = BrightnessController.brightness
+    private(set) var keyboardBrightness: Float? = KeyboardBacklightController.brightness
 
     var replaceHUD: Bool {
         didSet {
@@ -69,6 +70,12 @@ public final class SystemModule: NotchModule {
         volume = AudioController.volume ?? 0
         isMuted = AudioController.isMuted
         brightness = BrightnessController.brightness
+        keyboardBrightness = KeyboardBacklightController.brightness
+    }
+
+    func setKeyboardBrightness(_ value: Float) {
+        KeyboardBacklightController.setBrightness(value)
+        refreshLevels()
     }
 
     func setVolume(_ value: Float) {
@@ -126,6 +133,11 @@ public final class SystemModule: NotchModule {
             BrightnessController.setBrightness(current + (key == .brightnessUp ? step : -step))
             refreshLevels()
             showLevelHUD(symbol: "sun.max.fill", level: brightness ?? 0)
+        case .keyboardUp, .keyboardDown:
+            guard let current = KeyboardBacklightController.brightness else { return false }
+            KeyboardBacklightController.setBrightness(current + (key == .keyboardUp ? step : -step))
+            refreshLevels()
+            showLevelHUD(symbol: "light.max", level: keyboardBrightness ?? 0)
         }
         return true
     }
@@ -250,81 +262,150 @@ private struct BatteryBadge: View {
     }
 }
 
+private enum SystemColors {
+    static let volume = Color(red: 1.0, green: 0.4, blue: 0.6)
+    static let display = Color(red: 1.0, green: 0.78, blue: 0.25)
+    static let keyboard = Color(red: 0.35, green: 0.85, blue: 1.0)
+    static let battery = Color(red: 0.3, green: 0.88, blue: 0.5)
+    static let lowBattery = Color(red: 1.0, green: 0.35, blue: 0.35)
+    static let awake = Color(red: 0.7, green: 0.5, blue: 1.0)
+}
+
 private struct SystemExpandedView: View {
     @Bindable var module: SystemModule
 
     var body: some View {
-        HStack(alignment: .top, spacing: 20) {
-            VStack(alignment: .leading, spacing: 14) {
-                LevelSlider(symbol: module.volumeSymbol,
-                            value: Binding(get: { module.isMuted ? 0 : module.volume }, set: { module.setVolume($0) }))
-                if module.brightness != nil {
-                    LevelSlider(symbol: "sun.max.fill",
-                                value: Binding(get: { module.brightness ?? 0 }, set: { module.setBrightness($0) }))
-                }
-                if module.battery.hasBattery {
-                    BatteryRow(battery: module.battery)
-                }
-                KeepAwakeRow(module: module)
-                if module.needsAccessibility {
-                    Button("Allow Accessibility for the custom HUD") {
-                        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
+        HStack(alignment: .top, spacing: 10) {
+            IslandCard(tint: SystemColors.volume, padding: 12) {
+                VStack(alignment: .leading, spacing: 0) {
+                    LevelSlider(title: "Volume", symbol: module.volumeSymbol, color: SystemColors.volume,
+                                value: Binding(get: { module.isMuted ? 0 : module.volume }, set: { module.setVolume($0) }))
+                    Spacer(minLength: 8)
+                    if module.brightness != nil {
+                        LevelSlider(title: "Display", symbol: "sun.max.fill", color: SystemColors.display,
+                                    value: Binding(get: { module.brightness ?? 0 }, set: { module.setBrightness($0) }))
+                        Spacer(minLength: 8)
                     }
-                    .buttonStyle(.link)
-                    .font(.caption)
+                    if module.keyboardBrightness != nil {
+                        LevelSlider(title: "Keyboard", symbol: "light.max", color: SystemColors.keyboard,
+                                    value: Binding(get: { module.keyboardBrightness ?? 0 },
+                                                   set: { module.setKeyboardBrightness($0) }))
+                    }
+                    if module.needsAccessibility {
+                        Spacer(minLength: 6)
+                        Button("Allow Accessibility for the custom HUD") {
+                            NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
+                        }
+                        .buttonStyle(.island)
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(SystemColors.display)
+                    }
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity)
+
+            VStack(spacing: 10) {
+                if module.battery.hasBattery {
+                    BatteryCard(battery: module.battery)
+                }
+                KeepAwakeCard(module: module)
+            }
+            .frame(width: 236)
         }
-        .padding(.top, 4)
+        .padding(.top, 2)
+        .padding(.bottom, 2)
         .onAppear { module.refreshLevels() }
     }
 }
 
 private struct LevelSlider: View {
-    @Environment(\.notchAccent) private var accent
+    let title: String
     let symbol: String
+    let color: Color
     @Binding var value: Float
 
     var body: some View {
+        let level = CGFloat(min(max(value, 0), 1))
         HStack(spacing: 10) {
-            Image(systemName: symbol)
-                .font(.system(size: 12, weight: .semibold))
-                .frame(width: 20)
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(.white.opacity(0.18))
-                    Capsule().fill(accent).frame(width: geo.size.width * CGFloat(min(max(value, 0), 1)))
+            IconBadge(symbol, color: color, size: 24)
+                .contentTransition(.symbolEffect(.replace))
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    Text(title)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.85))
+                    Spacer()
+                    Text("\(Int((level * 100).rounded()))%")
+                        .font(.system(size: 10, weight: .semibold).monospacedDigit())
+                        .foregroundStyle(color)
                 }
-                .contentShape(Rectangle())
-                .gesture(DragGesture(minimumDistance: 0).onChanged { drag in
-                    value = Float(min(max(drag.location.x / geo.size.width, 0), 1))
-                })
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(.white.opacity(0.12))
+                        Capsule()
+                            .fill(LinearGradient(colors: [color.opacity(0.65), color], startPoint: .leading, endPoint: .trailing))
+                            .frame(width: max(geo.size.width * level, 8))
+                            .shadow(color: color.opacity(0.5), radius: 4)
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 12, height: 12)
+                            .shadow(color: .black.opacity(0.4), radius: 2)
+                            .offset(x: min(max(geo.size.width * level - 6, 0), geo.size.width - 12))
+                    }
+                    .frame(height: 12)
+                    .frame(maxHeight: .infinity)
+                    .contentShape(Rectangle())
+                    .gesture(DragGesture(minimumDistance: 0).onChanged { drag in
+                        value = Float(min(max(drag.location.x / geo.size.width, 0), 1))
+                    })
+                    .pointingHandCursor()
+                }
+                .frame(height: 14)
             }
-            .frame(height: 6)
         }
-        .frame(height: 18)
+        .animation(.easeOut(duration: 0.1), value: value)
     }
 }
 
-private struct BatteryRow: View {
+private struct BatteryCard: View {
     let battery: BatteryMonitor
 
     var body: some View {
-        HStack(spacing: 10) {
-            Image(systemName: battery.symbolName)
-                .font(.system(size: 12))
-                .frame(width: 20)
-                .foregroundStyle(battery.isCharging ? .green : .white)
-            Text("\(battery.percent)%").monospacedDigit()
-            if let minutes = battery.timeRemaining {
-                Text(battery.isCharging ? "· full in \(Self.format(minutes))" : "· \(Self.format(minutes)) left")
-                    .foregroundStyle(.white.opacity(0.5))
-            } else if battery.isPluggedIn && !battery.isCharging {
-                Text("· plugged in").foregroundStyle(.white.opacity(0.5))
+        let color = battery.isCharging || battery.percent > 20 ? SystemColors.battery : SystemColors.lowBattery
+        IslandCard(tint: color, padding: 10) {
+            HStack(spacing: 10) {
+                ZStack {
+                    Circle().stroke(.white.opacity(0.12), lineWidth: 4)
+                    Circle()
+                        .trim(from: 0, to: CGFloat(battery.percent) / 100)
+                        .stroke(color, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                        .shadow(color: color.opacity(0.5), radius: 3)
+                    Image(systemName: battery.isCharging ? "bolt.fill" : "battery.100")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(color)
+                }
+                .frame(width: 34, height: 34)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(battery.percent)%")
+                        .font(.system(size: 17, weight: .bold, design: .rounded).monospacedDigit())
+                    Text(detail)
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.55))
+                        .lineLimit(1)
+                }
+                Spacer(minLength: 0)
             }
         }
-        .font(.system(size: 12, weight: .medium))
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var detail: String {
+        if let minutes = battery.timeRemaining {
+            return battery.isCharging ? "Full in \(Self.format(minutes))" : "\(Self.format(minutes)) left"
+        }
+        if battery.isCharging { return "Charging" }
+        return battery.isPluggedIn ? "Plugged in" : "On battery"
     }
 
     static func format(_ minutes: Int) -> String {
@@ -338,7 +419,7 @@ private struct SystemSettingsView: View {
 
     var body: some View {
         Form {
-            Toggle("Replace the volume & brightness HUD", isOn: $module.replaceHUD)
+            Toggle("Replace the volume, brightness & keyboard light HUD", isOn: $module.replaceHUD)
             if module.needsAccessibility {
                 Text("\(AppInfo.name) needs Accessibility permission to intercept the volume and brightness keys. Enable \(AppInfo.name) in System Settings → Privacy & Security → Accessibility. If you just updated \(AppInfo.name), remove it from the list and add it again.")
                     .font(.caption)
@@ -383,45 +464,59 @@ private struct AwakeBadge: View {
     }
 }
 
-private struct KeepAwakeRow: View {
+private struct KeepAwakeCard: View {
     let module: SystemModule
-    @Environment(\.notchAccent) private var accent
 
     private static let options: [(label: String, minutes: Int?)] = [("30m", 30), ("1h", 60), ("2h", 120), ("∞", nil)]
 
     var body: some View {
         let hold = module.manualAwake
-        HStack(spacing: 6) {
-            Image(systemName: "cup.and.saucer.fill")
-                .font(.system(size: 12))
-                .frame(width: 20)
-                .foregroundStyle(hold != nil ? accent : .white)
-            Text("Keep awake")
-                .font(.system(size: 12, weight: .medium))
-            if let until = hold?.until {
-                TimelineView(.periodic(from: .now, by: 30)) { context in
-                    Text(AwakeFormat.remaining(until.timeIntervalSince(context.date)))
-                        .font(.system(size: 11).monospacedDigit())
-                        .foregroundStyle(.white.opacity(0.5))
+        let color = SystemColors.awake
+        IslandCard(tint: color, padding: 10) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
+                    IconBadge("cup.and.saucer.fill", color: color, size: 22)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("Keep awake")
+                            .font(.system(size: 11, weight: .semibold))
+                        Group {
+                            if let until = hold?.until {
+                                TimelineView(.periodic(from: .now, by: 30)) { context in
+                                    Text("\(AwakeFormat.remaining(until.timeIntervalSince(context.date))) left")
+                                }
+                            } else {
+                                Text(hold != nil ? "Until turned off" : "Off")
+                            }
+                        }
+                        .font(.system(size: 10).monospacedDigit())
+                        .foregroundStyle(.white.opacity(0.55))
+                    }
+                    Spacer(minLength: 0)
+                    if hold != nil {
+                        Button { module.stopKeepAwake() } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 9, weight: .bold))
+                                .frame(width: 20, height: 20)
+                                .background(.white.opacity(0.12), in: Circle())
+                        }
+                        .buttonStyle(.island)
+                        .help("Stop keeping awake")
+                    }
                 }
-            }
-            Spacer(minLength: 4)
-            ForEach(Self.options, id: \.label) { option in
-                let selected = hold != nil && optionMatches(option.minutes, hold)
-                Button(option.label) { module.keepAwake(minutes: option.minutes) }
-                    .buttonStyle(.island)
-                    .font(.system(size: 11, weight: .semibold))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background(selected ? accent.opacity(0.3) : .white.opacity(0.12), in: Capsule())
-            }
-            if hold != nil {
-                Button("Off") { module.stopKeepAwake() }
-                    .buttonStyle(.island)
-                    .font(.system(size: 11, weight: .semibold))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background(.white.opacity(0.12), in: Capsule())
+                HStack(spacing: 5) {
+                    ForEach(Self.options, id: \.label) { option in
+                        let selected = hold != nil && optionMatches(option.minutes, hold)
+                        Button { module.keepAwake(minutes: option.minutes) } label: {
+                            Text(option.label)
+                                .font(.system(size: 11, weight: .semibold))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 4)
+                                .foregroundStyle(selected ? .white : .white.opacity(0.8))
+                                .background(selected ? color.opacity(0.55) : .white.opacity(0.1), in: Capsule())
+                        }
+                        .buttonStyle(.island)
+                    }
+                }
             }
         }
     }

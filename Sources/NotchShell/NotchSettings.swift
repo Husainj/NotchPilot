@@ -42,6 +42,10 @@ public final class NotchSettings {
     public var showLiveActivities: Bool {
         didSet { defaults.set(showLiveActivities, forKey: "showLiveActivities") }
     }
+    /// Give every tab its own colour instead of the theme accent.
+    public var colorfulTabs: Bool {
+        didSet { defaults.set(colorfulTabs, forKey: "colorfulTabs") }
+    }
     public var idleDisplay: IdleDisplay {
         didSet { defaults.set(idleDisplay.rawValue, forKey: "idleDisplay") }
     }
@@ -57,7 +61,7 @@ public final class NotchSettings {
 
     private init() {
         defaults.register(defaults: ["hoverOpenDelay": 0.25, "hideInFullScreen": true, "haptics": true,
-                                     "showLiveActivities": true])
+                                     "showLiveActivities": true, "colorfulTabs": true])
         hoverOpenDelay = defaults.double(forKey: "hoverOpenDelay")
         hideInFullScreen = defaults.bool(forKey: "hideInFullScreen")
         display = DisplayChoice(rawValue: defaults.string(forKey: "display") ?? "") ?? .builtIn
@@ -65,6 +69,7 @@ public final class NotchSettings {
         haptics = defaults.bool(forKey: "haptics")
         theme = NotchTheme(rawValue: defaults.string(forKey: "theme") ?? "") ?? .minimal
         showLiveActivities = defaults.bool(forKey: "showLiveActivities")
+        colorfulTabs = defaults.bool(forKey: "colorfulTabs")
         idleDisplay = IdleDisplay(rawValue: defaults.string(forKey: "idleDisplay") ?? "") ?? .nothing
         idleCustomText = defaults.string(forKey: "idleCustomText") ?? ""
         toggleHotKey = defaults.object(forKey: "toggleHotKey") == nil

@@ -100,6 +100,7 @@ private struct CallCard: View {
                             .lineLimit(1)
                     }
                     .contentShape(Rectangle())
+                    .pointingHandCursor()
                     .onTapGesture {
                         NSRunningApplication(processIdentifier: client.pid)?.activate()
                     }

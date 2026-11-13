@@ -31,6 +31,48 @@ private struct IslandButtonBody: View {
             .animation(.spring(response: 0.22, dampingFraction: 0.6), value: configuration.isPressed)
             .animation(.easeOut(duration: 0.15), value: hovering)
             .onHover { hovering = $0 }
+            .pointingHandCursor(isEnabled)
+    }
+}
+
+public extension View {
+    /// Shows the pointing-hand cursor while the pointer is over this view.
+    func pointingHandCursor(_ enabled: Bool = true) -> some View {
+        modifier(PointingHandCursor(enabled: enabled))
+    }
+}
+
+/// The island is a non-activating panel, so AppKit cursor rects don't apply
+/// reliably; re-assert the cursor on every pointer move instead.
+private struct PointingHandCursor: ViewModifier {
+    let enabled: Bool
+    @State private var inside = false
+
+    func body(content: Content) -> some View {
+        content
+            .onContinuousHover { phase in
+                switch phase {
+                case .active:
+                    if enabled {
+                        NSCursor.pointingHand.set()
+                        inside = true
+                    } else if inside {
+                        NSCursor.arrow.set()
+                        inside = false
+                    }
+                case .ended:
+                    if inside {
+                        NSCursor.arrow.set()
+                        inside = false
+                    }
+                }
+            }
+            .onDisappear {
+                if inside {
+                    NSCursor.arrow.set()
+                    inside = false
+                }
+            }
     }
 }
 

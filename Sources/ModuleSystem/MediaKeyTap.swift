@@ -6,7 +6,7 @@ import ApplicationServices
 @MainActor
 final class MediaKeyTap {
     enum Key {
-        case volumeUp, volumeDown, mute, brightnessUp, brightnessDown
+        case volumeUp, volumeDown, mute, brightnessUp, brightnessDown, keyboardUp, keyboardDown
     }
 
     /// Return true to consume the key press.
@@ -63,6 +63,8 @@ final class MediaKeyTap {
         case 7: key = .mute              // NX_KEYTYPE_MUTE
         case 2: key = .brightnessUp      // NX_KEYTYPE_BRIGHTNESS_UP
         case 3: key = .brightnessDown    // NX_KEYTYPE_BRIGHTNESS_DOWN
+        case 21: key = .keyboardUp       // NX_KEYTYPE_ILLUMINATION_UP
+        case 22: key = .keyboardDown     // NX_KEYTYPE_ILLUMINATION_DOWN
         default: return false
         }
         let flags = event.modifierFlags
